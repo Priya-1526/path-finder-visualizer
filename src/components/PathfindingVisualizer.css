@@ -1,0 +1,23 @@
+.grid-container {
+  margin: 2% auto;
+}
+
+.grid {
+  white-space: pre;
+}
+
+button {
+  margin: 2px;
+}
+
+.visualizer-title {
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 20px 0;
+}
+
