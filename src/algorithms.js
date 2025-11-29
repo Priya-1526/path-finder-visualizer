@@ -1,5 +1,23 @@
-// ---------- DIJKSTRA ----------
+// ---------------- RESET GRID ----------------
+export function resetGrid(grid) {
+  for (const row of grid) {
+    for (const node of row) {
+      node.isVisited = false;
+      node.distance = Infinity;
+      node.previousNode = null;
+
+      // A* fields
+      node.fCost = Infinity;
+      node.gCost = Infinity;
+      node.hCost = Infinity;
+    }
+  }
+}
+
+// ---------------- DIJKSTRA ----------------
 export function dijkstra(grid, startNode, finishNode) {
+  resetGrid(grid);
+
   const visitedNodesInOrder = [];
   startNode.distance = 0;
 
@@ -19,13 +37,16 @@ export function dijkstra(grid, startNode, finishNode) {
 
     updateDijkstraNeighbors(closestNode, grid);
   }
+
+  return visitedNodesInOrder;
 }
 
-// ---------- A* SEARCH ----------
+// ---------------- A* SEARCH ----------------
 export function AStar(grid, startNode, finishNode) {
+  resetGrid(grid);
+
   const visitedNodesInOrder = [];
 
-  // Initialize costs
   startNode.gCost = 0;
   startNode.hCost = getManhattanDistance(startNode, finishNode);
   startNode.fCost = startNode.gCost + startNode.hCost;
@@ -46,10 +67,14 @@ export function AStar(grid, startNode, finishNode) {
 
     updateAStarNeighbors(current, grid, finishNode);
   }
+
+  return visitedNodesInOrder;
 }
 
-// ---------- BFS ----------
+// ---------------- BFS ----------------
 export function bfs(grid, startNode, finishNode) {
+  resetGrid(grid);
+
   const visitedNodesInOrder = [];
   const queue = [startNode];
 
@@ -62,7 +87,7 @@ export function bfs(grid, startNode, finishNode) {
     if (node === finishNode) return visitedNodesInOrder;
 
     const neighbors = getNeighbors(node, grid);
-    
+
     for (const next of neighbors) {
       if (!next.isVisited && !next.isWall) {
         next.isVisited = true;
@@ -71,11 +96,14 @@ export function bfs(grid, startNode, finishNode) {
       }
     }
   }
+
   return visitedNodesInOrder;
 }
 
-// ---------- DFS ----------
+// ---------------- DFS ----------------
 export function dfs(grid, startNode, finishNode) {
+  resetGrid(grid);
+
   const visitedNodesInOrder = [];
   const stack = [startNode];
 
@@ -91,7 +119,6 @@ export function dfs(grid, startNode, finishNode) {
 
     const neighbors = getNeighbors(node, grid);
 
-    // Push in reverse order to match typical visual patterns
     for (let i = neighbors.length - 1; i >= 0; i--) {
       const next = neighbors[i];
       if (!next.isVisited) {
@@ -100,18 +127,16 @@ export function dfs(grid, startNode, finishNode) {
       }
     }
   }
+
   return visitedNodesInOrder;
 }
 
-// ---------- HELPERS ----------
+// ---------------- HELPERS ----------------
 function getAllNodes(grid) {
   const nodes = [];
-  for (const row of grid) for (const node of row) {
-    node.fCost = Infinity;
-    node.gCost = Infinity;
-    node.hCost = Infinity;
-    nodes.push(node);
-  }
+  for (const row of grid)
+    for (const node of row)
+      nodes.push(node);
   return nodes;
 }
 
